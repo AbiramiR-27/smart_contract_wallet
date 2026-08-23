@@ -57,9 +57,9 @@ To configure the DApp to interact with another deployed smart wallet contract:
 1. Create a `config.json` inside the `frontend/` folder matching this layout:
 ```json
 {
-  "VITE_SMART_WALLET_ADDRESS": "0x9fe904239108b223a32a265465cbd4b40c7d173b",
-  "VITE_SEPOLIA_RPC_URL": "https://rpc.ankr.com/eth_sepolia",
-  "VITE_CHAIN_ID": 11155111
+  "VITE_SMART_WALLET_ADDRESS": "YOUR_DEPLOYED_WALLET_ADDRESS",
+  "VITE_SEPOLIA_RPC_URL": "YOUR_RPC_URL",
+  "VITE_CHAIN_ID": "YOUR_CHAIN_ID"
 }
 ```
 2. Update the values with your deployed contract address and RPC parameters. The client will parse the configurations automatically.
