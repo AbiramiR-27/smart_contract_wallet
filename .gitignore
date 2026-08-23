@@ -1,0 +1,22 @@
+# Hardhat build artifacts and cache
+artifacts/
+cache/
+
+# Dependencies
+node_modules/
+
+# Local Environment Variables & Configurations
+.env
+.env.example
+frontend/.env
+frontend/config.json
+
+# Test Coverage
+coverage/
+coverage.json
+
+# IDEs and OS files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
