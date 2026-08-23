@@ -1,0 +1,561 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aura Smart Contract Wallet</title>
+    <!-- Premium Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <!-- Background Glow Blobs -->
+    <div class="glow-blob glow-cyan"></div>
+    <div class="glow-blob glow-violet"></div>
+    <div class="glow-blob glow-gold"></div>
+
+    <div class="app-wrapper">
+        <!-- Sidebar Navigation -->
+        <aside class="app-sidebar">
+            <div class="brand">
+                <span class="brand-icon">✦</span>
+                <span class="brand-name">AURA</span>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <button class="nav-btn active" data-tab="dashboard">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="9" rx="1"/><rect x="14" y="3" width="7" height="5" rx="1"/><rect x="14" y="12" width="7" height="9" rx="1"/><rect x="3" y="16" width="7" height="5" rx="1"/></svg>
+                    <span>Dashboard</span>
+                </button>
+                <button class="nav-btn" data-tab="assets">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></svg>
+                    <span>Assets</span>
+                </button>
+                <button class="nav-btn" data-tab="send">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                    <span>Send</span>
+                </button>
+                <button class="nav-btn" data-tab="receive">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+                    <span>Receive</span>
+                </button>
+                <button class="nav-btn" data-tab="activity">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+                    <span>Activity</span>
+                </button>
+                <button class="nav-btn" data-tab="security">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+                    <span>Security</span>
+                </button>
+
+            </nav>
+
+            <div class="sidebar-footer">
+                <div class="developer-credit">Sepolia Wallet Suite</div>
+            </div>
+        </aside>
+
+        <!-- Main Workspace Area -->
+        <main class="app-content">
+            <!-- Top Header Status Bar -->
+            <header class="content-header">
+                <div class="header-left">
+                    <h2 class="section-title-label" id="current-tab-title">Dashboard</h2>
+                </div>
+                <div class="header-right">
+                    <div class="connection-status-group">
+                        <div class="network-badge-container">
+                            <span class="network-dot"></span>
+                            <span id="display-network">Not Connected</span>
+                        </div>
+                        <div class="eoa-info-pill">
+                            <span class="pill-label">EOA</span>
+                            <span class="pill-value" id="display-eoa-address">0x...</span>
+                        </div>
+                        <button class="theme-toggle-btn" id="btn-theme-toggle" title="Toggle Theme">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" id="theme-icon"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+                        </button>
+                        <button class="btn btn-connect" id="btn-eoa-connect">
+                            Connect Wallet
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Dashboard View -->
+            <div class="tab-panel active" id="panel-dashboard">
+                <!-- Single Sign-In Auth Gate Card -->
+                <div id="auth-gate-container" class="auth-gate-wrapper">
+                    <div class="card auth-card" id="card-auth-login">
+                        <h3 class="card-title text-center">Single Sign-In Verification</h3>
+                        <p class="card-subtitle text-center">Authenticate your session by cryptographically signing a nonce message. No gas fee required.</p>
+                        
+                        <div class="auth-box-layout">
+                            <div class="auth-detail-field">
+                                <span class="label">Challenge Message Preview</span>
+                                <div class="auth-message-box" id="auth-msg-preview">
+                                    Sign in to Smart Wallet
+                                    Nonce: [Generating...]
+                                </div>
+                            </div>
+                            <div class="auth-status-bar">
+                                <span class="label">Auth Status:</span>
+                                <span class="value status-warn" id="auth-status-text">Verification Required</span>
+                            </div>
+                            <button class="btn btn-primary w-100" id="btn-trigger-auth" disabled>Sign Authentication Challenge</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div id="dashboard-grid-container" class="dashboard-grid" style="display: none;">
+                    <!-- Balance Summary Card -->
+                    <div class="col-span-2 card balance-card">
+                        <div class="balance-card-header">
+                            <span class="balance-label">Total Balance</span>
+                            <div class="balance-change positive">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 6 13.5 15.5 8.5 10.5 1 18"/><polyline points="17 6 23 6 23 12"/></svg>
+                                <span id="balance-change-percent">+2.56% ($135.00)</span>
+                            </div>
+                        </div>
+                        <div class="balance-amount-display">
+                            <span id="balance-usd-value">$0.00</span>
+                        </div>
+                        <div class="balance-breakdown">
+                            <div class="breakdown-item">
+                                <div class="asset-icon">Ξ</div>
+                                <div class="breakdown-details">
+                                    <span class="breakdown-name">Ethereum</span>
+                                    <span class="breakdown-balance" id="wallet-eth-balance">0.00 ETH</span>
+                                </div>
+                            </div>
+                            <div class="breakdown-item">
+                                <div class="asset-icon usdc">$</div>
+                                <div class="breakdown-details">
+                                    <span class="breakdown-name">USD Coin</span>
+                                    <span class="breakdown-balance" id="wallet-usdc-balance">0 USDC</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Quick Actions Card -->
+                    <div class="card actions-card">
+                        <h3 class="card-title">Quick Actions</h3>
+                        <div class="action-buttons-grid">
+                            <button class="action-btn" data-action="send">
+                                <div class="action-icon send">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+                                </div>
+                                <span>Send</span>
+                            </button>
+                            <button class="action-btn" data-action="receive">
+                                <div class="action-icon receive">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="8 17 12 21 16 17"/><line x1="12" y1="12" x2="12" y2="21"/><path d="M20.88 18.09A5 5 0 0 0 18 9h-1.26A8 8 0 1 0 3 16.29"/></svg>
+                                </div>
+                                <span>Receive</span>
+                            </button>
+                            <button class="action-btn" id="btn-quick-sign">
+                                <div class="action-icon sign">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.5 3.5a2.121 2.121 0 0 1 3 3L7 19l-4 1 1-4L16.5 3.5z"/></svg>
+                                </div>
+                                <span>Sign Message</span>
+                            </button>
+                            <button class="action-btn" id="btn-quick-explorer">
+                                <div class="action-icon manage">
+                                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
+                                </div>
+                                <span>Explorer</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <!-- Wallet Accounts Card -->
+                    <div class="col-span-2 card accounts-detail-card">
+                        <h3 class="card-title">Connected Accounts</h3>
+                        
+                        <div class="account-row-display">
+                            <div class="account-badge eoa">EOA Signer</div>
+                            <div class="account-details-body">
+                                <span class="address-string" id="eoa-address-full">Not Connected</span>
+                                <button class="btn-copy-address" data-copy="eoa-address-full">Copy</button>
+                            </div>
+                            <div class="account-notes">MetaMask account holds signing authority over Smart Wallet contract.</div>
+                        </div>
+
+                        <div class="account-row-display contract-wallet-row">
+                            <div class="account-badge smart-wallet">Smart Contract Wallet</div>
+                            <div class="account-details-body">
+                                <span class="address-string" id="smart-wallet-address-full">0xNotConfigured...</span>
+                                <button class="btn-copy-address" data-copy="smart-wallet-address-full">Copy</button>
+                            </div>
+                            <div class="account-notes">Deployed contract on Sepolia. Holds assets and executes actions.</div>
+                        </div>
+                    </div>
+
+                    <!-- Security Overview Box -->
+                    <div class="card security-overview-card">
+                        <h3 class="card-title">Security Layers</h3>
+                        <div class="security-layers-stack">
+                            <div class="layer-item checked">
+                                <div class="layer-indicator">✓</div>
+                                <div class="layer-info">
+                                    <span class="layer-name">EOA Authentication</span>
+                                    <span class="layer-desc">Challenge nonce signature verification</span>
+                                </div>
+                            </div>
+                            <div class="layer-item checked">
+                                <div class="layer-indicator">✓</div>
+                                <div class="layer-info">
+                                    <span class="layer-name">Explicit Transaction Review</span>
+                                    <span class="layer-desc">Requires manual approval in UI</span>
+                                </div>
+                            </div>
+                            <div class="layer-item checked">
+                                <div class="layer-indicator">✓</div>
+                                <div class="layer-info">
+                                    <span class="layer-name">MetaMask Owner Signing</span>
+                                    <span class="layer-desc">On-chain EOA validation on Sepolia</span>
+                                </div>
+                            </div>
+                            <div class="layer-item checked">
+                                <div class="layer-indicator">✓</div>
+                                <div class="layer-info">
+                                    <span class="layer-name">Network Protection</span>
+                                    <span class="layer-desc">Detects and prevents cross-chain replays</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Assets View -->
+            <div class="tab-panel" id="panel-assets">
+                <div class="assets-view-wrapper">
+                    <div class="assets-header-summary">
+                        <h3>Your Wallet Assets</h3>
+                        <p>Tokens currently held in the Smart Contract Wallet on Sepolia Testnet.</p>
+                    </div>
+
+                    <div class="assets-cards-stack">
+                        <div class="asset-card-row">
+                            <div class="asset-token-meta">
+                                <span class="token-logo">Ξ</span>
+                                <div class="token-naming">
+                                    <span class="token-full-name">Ethereum</span>
+                                    <span class="token-symbol-tag">ETH</span>
+                                </div>
+                            </div>
+                            <div class="asset-token-numbers">
+                                <span class="token-balance-text" id="assets-eth-balance">0.00 ETH</span>
+                                <span class="token-usd-text" id="assets-eth-usd">$0.00</span>
+                            </div>
+                        </div>
+
+                        <div class="asset-card-row">
+                            <div class="asset-token-meta">
+                                <span class="token-logo usdc">$</span>
+                                <div class="token-naming">
+                                    <span class="token-full-name">USD Coin</span>
+                                    <span class="token-symbol-tag">USDC</span>
+                                </div>
+                            </div>
+                            <div class="asset-token-numbers">
+                                <span class="token-balance-text" id="assets-usdc-balance">0.00 USDC</span>
+                                <span class="token-usd-text" id="assets-usdc-usd">$0.00</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Deposit Funding Box -->
+                    <div class="card deposit-form-card">
+                        <h4 class="form-title">Fund Smart Wallet</h4>
+                        <p class="form-description">Deposit ETH from your connected EOA (MetaMask) into your Smart Contract Wallet.</p>
+                        <div class="deposit-form-group">
+                            <div class="input-wrapper">
+                                <input type="number" id="deposit-amount" placeholder="0.05" step="0.01" min="0.001">
+                                <span class="input-suffix">ETH</span>
+                            </div>
+                            <button class="btn btn-primary" id="btn-deposit-eth">Deposit ETH</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Send View -->
+            <div class="tab-panel" id="panel-send">
+                <div class="send-flow-container">
+                    <!-- Form Screen -->
+                    <div class="send-card card active" id="send-form-screen">
+                        <h3 class="card-title">Send Assets</h3>
+                        <p class="card-subtitle">Transfers assets using your pre-deployed Smart Contract Wallet.</p>
+                        
+                        <div class="form-group">
+                            <label for="send-recipient">Recipient Address</label>
+                            <input type="text" id="send-recipient" placeholder="0x..." class="address-input">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="send-amount">Amount</label>
+                            <div class="amount-input-group">
+                                <input type="number" id="send-amount" placeholder="0.0" step="0.01" min="0.0001">
+                                <select id="send-asset-select">
+                                    <option value="ETH">ETH</option>
+                                    <option value="USDC">USDC</option>
+                                </select>
+                            </div>
+                        </div>
+
+                        <div class="network-detail-row">
+                            <span class="label">Target Network</span>
+                            <span class="value">Sepolia Testnet</span>
+                        </div>
+
+                        <button class="btn btn-primary w-100" id="btn-send-review">Review Transaction</button>
+                    </div>
+
+                    <!-- Review Screen -->
+                    <div class="send-card card" id="send-review-screen">
+                        <h3 class="card-title text-center">Review Transaction</h3>
+                        <p class="card-subtitle text-center">Please verify the transaction details below.</p>
+
+                        <div class="review-details-box">
+                            <div class="review-row">
+                                <span class="label">From (Smart Wallet)</span>
+                                <span class="value code-text" id="review-from-wallet">0x...</span>
+                            </div>
+                            <div class="review-row">
+                                <span class="label">To (Recipient)</span>
+                                <span class="value code-text" id="review-to-recipient">0x...</span>
+                            </div>
+                            <div class="review-row">
+                                <span class="label">Amount</span>
+                                <span class="value highlight-text" id="review-amount-val">0.00 ETH</span>
+                            </div>
+                            <div class="review-row">
+                                <span class="label">Network</span>
+                                <span class="value">Sepolia Testnet</span>
+                            </div>
+                            <div class="review-row">
+                                <span class="label">Estimated Gas Limit</span>
+                                <span class="value" id="review-gas-val">Calculating...</span>
+                            </div>
+                        </div>
+
+                        <div class="review-warning-message">
+                            You are approving this transaction using your connected EOA signature.
+                        </div>
+
+                        <div class="review-buttons-row">
+                            <button class="btn btn-secondary" id="btn-send-back">Back</button>
+                            <button class="btn btn-success" id="btn-send-approve">Approve Transaction</button>
+                        </div>
+                    </div>
+
+                    <!-- Progress Screen -->
+                    <div class="send-card card text-center" id="send-status-screen">
+                        <h3 class="card-title" id="status-title">Preparing...</h3>
+                        
+                        <div class="status-visual-area">
+                            <!-- Spinner -->
+                            <div class="spinner" id="status-spinner"></div>
+                            
+                            <!-- Success Check -->
+                            <div class="success-ring" id="status-success-ring" style="display:none;">
+                                <span class="checkmark">✓</span>
+                            </div>
+
+                            <!-- Error X -->
+                            <div class="error-ring" id="status-error-ring" style="display:none;">
+                                <span class="error-cross">✗</span>
+                            </div>
+                        </div>
+
+                        <div class="status-description" id="status-desc">
+                            Waiting for transaction inputs...
+                        </div>
+
+                        <div class="status-tx-hash-box" id="status-tx-box" style="display:none;">
+                            <span class="label">Tx Hash:</span>
+                            <span class="hash-value code-text" id="status-tx-hash">0x...</span>
+                        </div>
+
+                        <div class="status-actions-row">
+                            <a href="#" target="_blank" class="btn-explorer-link" id="btn-view-explorer" style="display:none;">
+                                View on Explorer →
+                            </a>
+                            <button class="btn btn-primary" id="btn-status-close" style="display:none;">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Receive View -->
+            <div class="tab-panel" id="panel-receive">
+                <div class="receive-card-container">
+                    <div class="card receive-card">
+                        <h3 class="card-title text-center">Receive Assets</h3>
+                        <p class="card-subtitle text-center">Send ETH or ERC-20 tokens directly to this Smart Contract Wallet address.</p>
+
+                        <div class="qr-code-holder">
+                            <!-- Placeholder visual representation of QR code with canvas/SVG -->
+                            <div class="hologram-qr" id="qr-code-element">
+                                <svg width="180" height="180" viewBox="0 0 100 100" class="qr-svg">
+                                    <!-- Simple styled QR elements for Web3 futuristic look -->
+                                    <rect x="0" y="0" width="25" height="25" fill="#00f2fe" opacity="0.8"/>
+                                    <rect x="5" y="5" width="15" height="15" fill="#05070f"/>
+                                    <rect x="75" y="0" width="25" height="25" fill="#00f2fe" opacity="0.8"/>
+                                    <rect x="80" y="5" width="15" height="15" fill="#05070f"/>
+                                    <rect x="0" y="75" width="25" height="25" fill="#00f2fe" opacity="0.8"/>
+                                    <rect x="5" y="80" width="15" height="15" fill="#05070f"/>
+                                    <!-- Inner dots representation -->
+                                    <rect x="35" y="10" width="10" height="10" fill="#e100ff" opacity="0.7"/>
+                                    <rect x="55" y="15" width="15" height="10" fill="#00f2fe" opacity="0.7"/>
+                                    <rect x="30" y="45" width="20" height="20" fill="#e100ff" opacity="0.6"/>
+                                    <rect x="60" y="40" width="15" height="15" fill="#fbbf24" opacity="0.8"/>
+                                    <rect x="40" y="70" width="25" height="10" fill="#00f2fe" opacity="0.7"/>
+                                    <rect x="75" y="75" width="15" height="15" fill="#e100ff" opacity="0.8"/>
+                                </svg>
+                            </div>
+                        </div>
+
+                        <div class="receive-address-wrapper">
+                            <span class="label">Smart Wallet Address</span>
+                            <div class="address-copy-bar">
+                                <span class="address-display-box code-text" id="receive-wallet-address">0xNotConfigured...</span>
+                                <button class="btn btn-primary btn-copy" data-copy="receive-wallet-address">Copy</button>
+                            </div>
+                        </div>
+
+                        <div class="receive-meta-info">
+                            <div class="meta-row">
+                                <span class="label">Network Name</span>
+                                <span class="value">Sepolia Testnet</span>
+                            </div>
+                            <div class="meta-row">
+                                <span class="label">Supported Assets</span>
+                                <span class="value">ETH, ERC-20 Tokens</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Activity View -->
+            <div class="tab-panel" id="panel-activity">
+                <div class="card activity-card">
+                    <div class="activity-card-header">
+                        <h3 class="card-title">Transaction Activity</h3>
+                        <button class="btn btn-secondary btn-sm" id="btn-refresh-activity">Refresh</button>
+                    </div>
+                    
+                    <div class="activity-table-wrapper">
+                        <table class="activity-table">
+                            <thead>
+                                <tr>
+                                    <th>Type</th>
+                                    <th>Amount</th>
+                                    <th>Destination/Source</th>
+                                    <th>Status</th>
+                                    <th>Nonce</th>
+                                    <th>Explorer</th>
+                                </tr>
+                            </thead>
+                            <tbody id="activity-log-body">
+                                <tr>
+                                    <td colspan="6" class="text-center text-muted py-4">
+                                        No recent transactions found on Sepolia testnet.
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Security View -->
+            <div class="tab-panel" id="panel-security">
+                <div class="security-view-wrapper">
+                    <!-- Message Signing Section -->
+                    <div class="card security-main-card">
+                        <h3 class="card-title">EOA Message Signing</h3>
+                        <p class="card-description">Verify ownership of your connected EOA signer key. Message signatures are computed off-chain by MetaMask.</p>
+                        
+                        <div class="form-group">
+                            <label for="signing-message-input">Arbitrary Message</label>
+                            <textarea id="signing-message-input" rows="3" placeholder="Hello from my Smart Wallet"></textarea>
+                        </div>
+
+                        <button class="btn btn-primary" id="btn-sign-arbitrary">Sign Message</button>
+
+                        <div class="signing-result-box" id="signing-result-area" style="display:none;">
+                            <h4 class="result-title">Message Signed Successfully</h4>
+                            
+                            <div class="result-detail-row">
+                                <span class="label">Signer EOA Address</span>
+                                <span class="value code-text" id="sig-result-signer">0x...</span>
+                            </div>
+                            
+                            <div class="result-detail-row">
+                                <span class="label">Message Signature</span>
+                                <div class="signature-scroll-box code-text" id="sig-result-hash">0x...</div>
+                                <button class="btn-copy-sig" id="btn-copy-signature">Copy Signature</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Security Status Indicators -->
+                    <div class="card security-stats-card">
+                        <h3 class="card-title">Security Configurations</h3>
+                        <div class="security-layers-list-detailed">
+                            <div class="layer-item-detailed">
+                                <span class="layer-dot green"></span>
+                                <div class="layer-details">
+                                    <span class="title">MetaMask Signer Protection</span>
+                                    <p class="desc">Only EOA possessing the private key matching the contract owner can execute operations.</p>
+                                </div>
+                            </div>
+                            <div class="layer-item-detailed">
+                                <span class="layer-dot green"></span>
+                                <div class="layer-details">
+                                    <span class="title">Cryptographic Authentication Session</span>
+                                    <p class="desc">Requires signing a cryptographic challenge message containing a session nonce on dashboard load.</p>
+                                </div>
+                            </div>
+                            <div class="layer-item-detailed">
+                                <span class="layer-dot green"></span>
+                                <div class="layer-details">
+                                    <span class="title">Network Integrity Validation</span>
+                                    <p class="desc">Locked to chain ID 11155111 (Sepolia testnet) to prevent replays on alternate chains.</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+        </main>
+    </div>
+
+    <!-- Network Error Modal -->
+    <div class="modal-overlay" id="network-warning-modal">
+        <div class="modal-card">
+            <div class="modal-icon warning">⚠️</div>
+            <h3 class="modal-title">Wrong Network Connected</h3>
+            <p class="modal-text">This Smart Contract Wallet is deployed and configured on Sepolia Testnet. Please switch your network to continue.</p>
+            <button class="btn btn-primary w-100" id="btn-modal-switch-network">Switch to Sepolia</button>
+        </div>
+    </div>
+
+    <!-- Toast Notification Container -->
+    <div class="toast-container" id="toast-container"></div>
+
+    <!-- Ethers.js v6 Library (CDN) -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ethers/6.7.0/ethers.umd.min.js"></script>
+    <!-- Core JS Logic -->
+    <script src="app.js"></script>
+</body>
+</html>
